@@ -1,0 +1,16 @@
+{
+  "name": "demo",
+  "version": "1.0.0",
+  "description": "使用npm构建小程序",
+  "main": "app.js",
+  "scripts": {
+    "start": "gulp"
+  },
+  "author": "anhao",
+  "license": "ISC",
+  "devDependencies": {
+    "gulp": "^3.9.1",
+    "gulp-less": "^4.0.1",
+    "gulp-rename": "^1.4.0"
+  }
+}
