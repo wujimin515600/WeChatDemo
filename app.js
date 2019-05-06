@@ -1,14 +1,15 @@
 //app.js
 const router = require('router/index.js')
-console.log('router', router)
+import { dialog} from 'utils/dialog.js'
 App({
   router,
+  dialog,
   onLaunch: function () {
     // 展示本地存储能力
     var logs = wx.getStorageSync('logs') || []
     logs.unshift(Date.now())
     wx.setStorageSync('logs', logs)
-
+    dialog('登录')
     // 登录
     wx.login({
       success: res => {

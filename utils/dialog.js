@@ -1,6 +1,7 @@
-const dialog = () => {
+const dialog = (msg='测试') => {
 	wx.showToast({
-    title: '测试',
+    title: msg,
+    icon:'none'
   })
 }
 module.exports = {
