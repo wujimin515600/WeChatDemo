@@ -1,17 +1,39 @@
-import {
-  Promise
-} from 'promise.js'
+
 import {
   domain,
   httpList
 } from 'api.js'
 import {
+  login
+} from 'login.js'
+import {
   dialog
 } from 'dialog.js'
-const http = {
+//添加事件结束
+Promise.prototype.finally = function (callback) {
+  var Promise = this.constructor;
+  return this.then(
+    function (value) {
+      Promise.resolve(callback()).then(
+        function () {
+          return value;
+        }
+      );
+    },
+    function (reason) {
+      Promise.resolve(callback()).then(
+        function () {
+          throw reason;
+        }
+      );
+    }
+  );
+}
+
+export const http = {
   defaultOptions: {
     showLoading: true,
-    needLogin: false,
+    // needLogin: false,
   },
   /**
    * @param {String} url
@@ -26,69 +48,90 @@ const http = {
    * 
    */
   get(url, ops = {}) {
-    ops.url = url
-    ops.method = 'GET'
-    main(ops)
+    console.log(url,'=====',ops)
+    let data = getData(ops, this.defaultOptions)
+    data['url'] = url
+    data['method'] = 'GET'
+    // console.log('main', this.main(data))
+    // if(!this.main(data)) return;
+    return this.main(data);
   },
   post(url, ops = {}) {
-    ops.url = url
-    ops.method = 'POST'
-    main(ops)
+    let data = getData(ops, this.defaultOptions)
+    data['url'] = url
+    data['method'] = 'POST'
+    // if (!this.main(data)) return;
+    return this.main(data);
   },
   main(ops) {
-    ops = Object.assign({}, defaultOptions, ops);
+    // ops = Object.assign({}, this.defaultOptions, ops);
+    // if (ops.needLogin) {
+    //   if (login.isLogin()){
+
+    //     ops.data.openid = login.isLogin().openid
+    //   }else{
+        
+    //     let o = login.getInfo()
+    //     console.log('o',o)
+    //   }
+    //   return;
+    // }
+    if (ops.showLoading) {
+      dialog.loading()
+    }
     return new Promise((resolve, reject) => {
       wx.request({
-        url: ops.url,
-        data: data,
+        url: joinDomain(ops.url),
+        data: ops.data,
         method: ops.method,
         header: {
           'content-type': 'application/json',
           //  可以在这加sessionid
         },
-        success: function (res) {
-          if (res.statusCode == 200) {
-            resolve(res); //返回成功提示信息
+        success: function(res) {
+          if (res.statusCode == 200 && res.data.code == 200) {
+            resolve(res.data); //返回成功提示信息
           } else {
-            reject(res.data.message); //返回错误提示信息
+            reject('接口错误'); //返回错误提示信息
+            errorMsg(res.statusCode)
           }
         },
-        fail: function (res) {
+        fail: function(res) {
           reject("网络连接错误"); //返回错误提示信息
+          errorMsg(400)
         },
-        complete: function (res) {
-
+        complete: function(res) {
+          if (ops.showLoading) {
+            dialog.hideLoading()
+          }
         }
       })
     });
   }
 }
-
-const request = (url, method, data) => {
-  return new Promise((resolve, reject) => {
-    wx.request({
-      url: url,
-      data: data,
-      method: method,
-      header: {
-        'content-type': 'application/json',
-        'cld.stats.page_entry': Get('scene'),
-        'token': Get('token'),
-        'version': app.globalData.version
-      },
-      success: function(res) {
-        if (res.statusCode == 200) {
-          resolve(res); //返回成功提示信息
-        } else {
-          reject(res.data.message); //返回错误提示信息
-        }
-      },
-      fail: function(res) {
-        reject("网络连接错误"); //返回错误提示信息
-      },
-      complete: function(res) {
-
-      }
-    })
-  });
+// 拼接url
+function joinDomain(url) {
+  return domain + httpList[url];
 }
+// 获取data
+function getData(ops, defaultOptions){
+  let obj = {}
+  for (let i in defaultOptions){
+    if (ops.hasOwnProperty(i)) {
+      obj[i] = ops[i]
+      delete ops[i]
+    }
+    obj['data'] = ops
+  }
+  return obj;
+}
+function errorMsg(msg) {
+  if (msg) {
+    console.log('msg',msg)
+    dialog.tips(msg)
+  } else {
+    dialog.tips(1001)
+  }
+
+}
+module.exports = { http} 

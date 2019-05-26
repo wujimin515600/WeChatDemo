@@ -1,7 +1,5 @@
-//index.js
-//获取应用实例
+
 const app = getApp()
-console.log('app',app)
 Page({
   data: {
     motto: 'Hello World',
@@ -44,13 +42,26 @@ Page({
         }
       })
     }
+    this.main()
   },
   getUserInfo: function(e) {
-    console.log(e)
     app.globalData.userInfo = e.detail.userInfo
     this.setData({
       userInfo: e.detail.userInfo,
       hasUserInfo: true
+    })
+  },
+  onShow(){},
+  main(){
+    app.http.get('getUser',{needLogin:true,data:{q:1}})
+    .then(res=>{
+      console.log(res)
+    })
+    .catch(err => {
+      console.log('err',err)
+    })
+    .finally(()=>{
+      console.log('finally')
     })
   }
 })

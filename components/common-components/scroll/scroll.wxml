@@ -1,0 +1,3 @@
+<scroll-view scroll-y scroll-with-animation bindscrolltolower='lower' style="height: 200rpx;">
+  <view wx:for='{{list}}' wx:for-item='item' wx:key='*this'>{{item}}</view>
+</scroll-view>

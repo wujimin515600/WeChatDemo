@@ -25,7 +25,13 @@ gulp.task('autoPage', () => {
         compileLess(event.path, event.type)
     });
 })
-gulp.task('default', ['autoApp', 'autoPage','compile'], () => {
+// 监听组件下的less
+gulp.task('autoComponents', () => {
+    gulp.watch('./components/**/**/*.less').on('change', (event) => {
+        compileLess(event.path, event.type)
+    });
+})
+gulp.task('default', ['autoApp', 'autoPage','compile','autoComponents'], () => {
     console.log('ok')
 })
 

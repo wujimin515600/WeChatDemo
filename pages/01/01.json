@@ -1,0 +1,6 @@
+{
+  "usingComponents": {
+    "scroll":"/components/common-components/scroll/scroll"
+  },
+    "enablePullDownRefresh": true
+}
