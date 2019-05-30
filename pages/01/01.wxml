@@ -1,2 +1,3 @@
-
-<scroll />
+<scroll bind:lower='_lower' list='{{list}}' id='scroll'/>
+<!-- <dialog title='测试标题' content='测试弹框内容' bind:cancelEvent="_cancelEvent" bind:confirmEvent="_confirmEvent" id='dialog'/>
+<button bindtap='showDialog'>按钮</button> -->

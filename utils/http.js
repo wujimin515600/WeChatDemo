@@ -90,7 +90,7 @@ export const http = {
         },
         success: function(res) {
           if (res.statusCode == 200 && res.data.code == 200) {
-            resolve(res.data); //返回成功提示信息
+            resolve(res.data.result); //返回成功提示信息
           } else {
             reject('接口错误'); //返回错误提示信息
             errorMsg(res.statusCode)

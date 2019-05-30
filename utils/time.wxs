@@ -1,0 +1,22 @@
+var filter = {
+  getDate: function (time, splitStr) {
+    if (!time) return '';
+    var date = getDate(time);
+    var M = date.getMonth() + 1;
+    var y = date.getFullYear();
+    var d = date.getDate();
+    var hh = date.getHours();
+    var mm = date.getMinutes();
+    var ss = date.getSeconds()
+    if (M < 10) M = "0" + M;
+    if (d < 10) d = "0" + d;
+    if (hh < 10) hh = "0" + hh;
+    if (mm < 10) mm = "0" + mm;
+    if (ss < 10) ss = "0" + ss;
+    return y + '-' + M + '-' + d + ' ' + hh + ':' + mm + ":" + ss
+  }
+}
+
+module.exports = {
+  getDate: filter.getDate
+}

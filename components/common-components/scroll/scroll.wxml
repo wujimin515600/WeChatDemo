@@ -1,3 +1,12 @@
-<scroll-view scroll-y scroll-with-animation bindscrolltolower='lower' style="height: 200rpx;">
-  <view wx:for='{{list}}' wx:for-item='item' wx:key='*this'>{{item}}</view>
+<scroll-view scroll-y scroll-with-animation bindscrolltolower='_lower' style="height: 600rpx;">
+  <view class='list' wx:for='{{list}}' wx:for-item='item' wx:key='{{item}}'>
+  	<image src='{{item.img}}'/>
+	<view class="right-info">
+		<view class='name'>
+			{{item.name}}
+		</view>
+		<view class='time'>{{filter.getDate(item.time)}}</view>
+	</view>	
+  </view>
 </scroll-view>
+<wxs module="filter" src="../../../utils/time.wxs"></wxs>

@@ -1,6 +1,7 @@
 {
   "usingComponents": {
-    "scroll":"/components/common-components/scroll/scroll"
+    "scroll":"/components/common-components/scroll/scroll",
+    "dialog": "/components/common-components/dialog/dialog"
   },
     "enablePullDownRefresh": true
 }
